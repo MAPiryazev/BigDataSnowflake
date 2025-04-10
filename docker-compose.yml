@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: ABD_Lab1
+    restart: on-failure:5  
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data_lab1:/var/lib/postgresql/data  
+      - "./исходные данные:/data"
+      - ./init:/docker-entrypoint-initdb.d  
+
+volumes:
+  pg_data_lab1: 
