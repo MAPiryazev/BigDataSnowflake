@@ -122,7 +122,7 @@ SELECT DISTINCT
     product_price, 
     product_quantity, 
     product_weight, 
-    col.color,           
+    col.product_color_id,          
     product_size, 
     br.product_brand_id, 
     product_material,        
@@ -138,20 +138,39 @@ JOIN product_brands AS br ON mock.product_brand = br.brand_name;
 
 
 
-INSERT INTO fact_sales(customer_id, seller_id, product_id, store_id, supplier_id, pet_id, sell_date, sale_total_price)
+
+INSERT INTO fact_sales (
+  customer_id,
+  seller_id,
+  product_id,
+  store_id,
+  supplier_id,
+  pet_id,
+  sell_date,
+  sale_total_price
+)
 SELECT
-    cust.customer_id,
-    sell.seller_id,
-    prod.product_id,
-    stor.store_id,
-    supp.supplier_id,
-    pt.pet_id,
-    mock.sale_date,
-    mock.sale_total_price
-FROM mock_data AS mock
-JOIN dim_customers AS cust ON mock.id = cust.customer_id
-JOIN dim_sellers AS sell ON mock.id = sell.seller_id
-JOIN dim_products AS prod ON mock.id = prod.product_id
-JOIN dim_stores AS stor ON mock.id = stor.store_id
-JOIN dim_suppliers AS supp ON mock.id = supp.supplier_id
-LEFT JOIN dim_pets AS pt ON mock.id = pt.pet_id;
+  customer.customer_id,
+  seller.seller_id,
+  product.product_id,
+  store.store_id,
+  supplier.supplier_id,
+  pet.pet_id,
+  md.sale_date,
+  md.sale_total_price
+FROM mock_data AS md
+JOIN dim_customers AS customer
+  ON md.customer_email = customer.email
+JOIN dim_sellers AS seller
+  ON md.seller_email = seller.seller_email
+JOIN dim_products AS product
+  ON md.product_name         = product.name
+ AND md.product_release_date = product.release_date
+JOIN dim_stores AS store
+  ON md.store_name  = store.name
+ AND md.store_email = store.email
+JOIN dim_suppliers AS supplier
+  ON md.supplier_email = supplier.email
+LEFT JOIN dim_pets AS pet
+  ON md.customer_pet_name  = pet.pet_name
+ AND md.customer_pet_breed = pet.pet_breed;
