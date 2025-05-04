@@ -147,6 +147,7 @@ INSERT INTO fact_sales (
   supplier_id,
   pet_id,
   sell_date,
+  sale_quantity,
   sale_total_price
 )
 SELECT
@@ -157,6 +158,7 @@ SELECT
   supplier.supplier_id,
   pet.pet_id,
   md.sale_date,
+  md.sale_quantity,
   md.sale_total_price
 FROM mock_data AS md
 JOIN dim_customers AS customer
