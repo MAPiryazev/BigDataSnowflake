@@ -114,5 +114,6 @@ CREATE TABLE fact_sales (
     supplier_id INT REFERENCES dim_suppliers(supplier_id) ON DELETE CASCADE,
     pet_id INT REFERENCES dim_pets(pet_id) ON DELETE CASCADE,
     sell_date DATE,
+    sale_quantity INT,
     sale_total_price NUMERIC(10,2)
 );
